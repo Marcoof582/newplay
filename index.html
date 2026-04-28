@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Meu Player Online</title>
+</head>
+<body style="font-family: Arial; text-align:center;">
+
+<h2>🎵 Meu Player</h2>
+
+<audio id="player" controls style="width:300px;">
+</audio>
+
+<br><br>
+
+<button onclick="trocar('LINK_DA_MUSICA_1')">Música 1</button>
+<button onclick="trocar('LINK_DA_MUSICA_2')">Música 2</button>
+
+<script>
+function trocar(link){
+  const player = document.getElementById("player");
+  player.src = link;
+  player.play();
+}
+</script>
+
+</body>
+</html>
