@@ -2,27 +2,62 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Meu Player Online</title>
+  <title>Player Automático</title>
 </head>
 <body style="font-family: Arial; text-align:center;">
 
 <h2>🎵 Meu Player</h2>
 
-<audio id="player" controls style="width:300px;">
-</audio>
+<audio id="player" controls style="width:300px;"></audio>
 
 <br><br>
 
-<button onclick="trocar('https://drive.google.com/uc?export=view&id=1w2QclI0vZ03tZFekpM1_MSwT03XmHMYk')">
-  Música 11
-</button>
+<button onclick="anterior()">⏮️</button>
+<button onclick="proxima()">⏭️</button>
+
+<ul id="lista" style="list-style:none;"></ul>
 
 <script>
-function trocar(link){
-  const player = document.getElementById("player");
-  player.src = link;
+const base = "https://SEU-PROJETO.pages.dev/musicas/";
+let musicas = [];
+let atual = 0;
+
+const player = document.getElementById("player");
+const lista = document.getElementById("lista");
+
+fetch("musicas.json")
+  .then(res => res.json())
+  .then(data => {
+    musicas = data;
+    montarLista();
+  });
+
+function montarLista(){
+  lista.innerHTML = "";
+  musicas.forEach((m, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `<button onclick="tocar(${i})">${m.nome}</button>`;
+    lista.appendChild(li);
+  });
+}
+
+function tocar(i){
+  atual = i;
+  player.src = base + musicas[i].arquivo;
   player.play();
 }
+
+function proxima(){
+  atual = (atual + 1) % musicas.length;
+  tocar(atual);
+}
+
+function anterior(){
+  atual = (atual - 1 + musicas.length) % musicas.length;
+  tocar(atual);
+}
+
+player.addEventListener("ended", proxima);
 </script>
 
 </body>
