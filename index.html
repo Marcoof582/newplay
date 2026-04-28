@@ -2,25 +2,19 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
-  <title>Player Automático</title>
+  <title>Player</title>
 </head>
-<body style="font-family: Arial; text-align:center;">
+<body style="text-align:center; font-family: Arial;">
 
-<h2>🎵 Meu Player 1</h2>
+<h2>🎵 Player</h2>
 
 <audio id="player" controls style="width:300px;"></audio>
-
-<br><br>
-
-<button onclick="anterior()">⏮️</button>
-<button onclick="proxima()">⏭️</button>
 
 <ul id="lista" style="list-style:none;"></ul>
 
 <script>
-const base = "https://SEU-PROJETO.pages.dev/musicas/";
+const base = "musicas/";
 let musicas = [];
-let atual = 0;
 
 const player = document.getElementById("player");
 const lista = document.getElementById("lista");
@@ -30,7 +24,8 @@ fetch("musicas.json")
   .then(data => {
     musicas = data;
     montarLista();
-  });
+  })
+  .catch(err => console.log("Erro JSON:", err));
 
 function montarLista(){
   lista.innerHTML = "";
@@ -42,22 +37,9 @@ function montarLista(){
 }
 
 function tocar(i){
-  atual = i;
   player.src = base + musicas[i].arquivo;
   player.play();
 }
-
-function proxima(){
-  atual = (atual + 1) % musicas.length;
-  tocar(atual);
-}
-
-function anterior(){
-  atual = (atual - 1 + musicas.length) % musicas.length;
-  tocar(atual);
-}
-
-player.addEventListener("ended", proxima);
 </script>
 
 </body>
